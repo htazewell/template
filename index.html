@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>Template</title>
-		 <meta charset="utf-8">
+		<title>Check out BTC!</title>
+		<meta charset="utf-8">
 	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<link rel="stylesheet" type="text/css" href="css/bootstrap.mis.css"/>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
 		<link rel="stylesheet" type="text/css" href="css/styles.css"/>
 		<script src='js/jquery-3.3.1.min.js' type="text/javascript"></script>
 		<script src="js/bootstrap.min.js" type="text/javascript"></script>
@@ -12,9 +12,41 @@
 		<script src="js/main.js" type="text/javascript"></script>
 	</head>
 	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm">
+					<button class="btn btn-primary" id="pullData">Get Bitcoin Price</button>
+					<button class="btn btn-primary" id="getHist">Get BTC history!</button>
+				</div>
+				<div class="col-sm" id="putResults">
+
+				</div>
+			</div>
+		</div>
+
 		<script type="text/javascript">
 			$(document).ready(function() {
-				
+				$("#pullData").click(function(){
+					$.get("https://api.coindesk.com/v1/bpi/currentprice.json",function(results){
+						console.log(results);
+						var object = JSON.parse(results);
+						var priceInDollars = object.bpi.USD.rate;
+						console.log(priceInDollars);
+						var priceInEuros = object.bpi.EUR.rate;
+						var priceInPounds = object.bpi.GBP.rate;
+						$("#putResults").append('<p>'+priceInDollars+' USD</p>');
+						$("#putResults").append('<p>'+priceInEuros+' EUR</p>');
+						$("#putResults").append('<p>'+priceInPounds+' GBP</p>');
+					});
+					$.get("https://min-api.cryptocompare.com/data/histohour?fsym=BTC&tsym=USD&limit=10&toTs=1513728000",function(data){
+						console.log(data);
+						var startTime = new Date(data.TimeFrom*1000);
+						console.log(startTime);
+						for(i=0;i<data.Data.length;i++){
+							
+						};
+					});
+				});
 			})
 		</script>
 	</body>
